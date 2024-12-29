@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homenagem para Carla</title>
+    <style>
+        body {
+            background-color: #ffccff;
+            color: #000;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        button {
+            background-color: #ff99cc;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #ff6699;
+        }
+        #container {
+            display: none;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 20px;
+            border: 2px solid #ff99cc;
+            border-radius: 5px;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        iframe {
+            width: 80%;
+            height: 315px;
+            margin-top: 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de login -->
+    <div id="loginPage">
+        <h1>Digite a senha para continuar</h1>
+        <input type="password" id="passwordInput" placeholder="Senha">
+        <button onclick="checkPassword()">Entrar</button>
+    </div>
+    
+    <!-- Página do conteúdo -->
+    <div id="container" style="display:none;">
+        <!-- Conteúdo dinâmico será carregado aqui -->
+    </div>
+
+    <script>
+        const pages = [
+            { content: `<h1>Oi, eu me chamo Izabelle.</h1><p>Antes de tudo gostaria de saber se você conhece o amor da minha vida, minha melhor amiga, meu presente de Deus.</p><button onclick="nextPage()">Começar</button>` },
+            { content: `<h1>Minha melhor amiga tem cabelo...</h1><p>Escolha uma opção:</p>
+                        <button onclick="nextPageIfCacheado()">Cacheado</button>
+                        <button onclick="showError()">Liso</button>` },
+            { content: `<h1>Isso mesmo!</h1><p>Ela tem o cabelo cacheado mais lindo desse mundo. Eu me derreto nessas ondas e no seu tom de mel, sem contar no cheiro que me leva para o céu.</p><img src="https://i.postimg.cc/9Mvpbf1B/foto-cabelo.jpg" alt="Cabelo da Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Minha melhor amiga tem olhos...</h1><p>Escolha uma opção:</p>
+                        <button onclick="showError()">Azuis</button>
+                        <button onclick="nextPageIfCastanho()">Castanhos</button>` },
+            { content: `<h1>Quão profundos são os olhos da minha querida.</h1><p>São de um castanho sem igual. Um abismo no qual eu me perco, mas também me encontro. Olhos os quais me enxergam e entendem a minha alma. Como eu amo os olhos castanhos dela.</p><img src="https://i.postimg.cc/VNvWctVR/foto-olhos.jpg" alt="Olhos da Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Ela tem um sorriso...</h1><p>Escolha uma opção:</p>
+                        <button onclick="showError()">Feio</button>
+                        <button onclick="nextPageIfLindo()">Lindo</button>` },
+            { content: `<h1>Sim, o sorriso dela é o mais lindo que eu já vi.</h1><p>O sorriso dela é mais brilhante do que todas as estrelas. Ele faz meu coração queimar. Eu procuro o sorriso dela todos os dias e ele me faz muito feliz.</p><img src="https://i.postimg.cc/DZbQSTF4/foto-sorriso.jpg" alt="Sorriso da Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Minha melhor amiga tem a boca...</h1><p>Escolha uma opção:</p>
+                        <button onclick="showError()">Marrom</button>
+                        <button onclick="nextPageIfRosada()">Rosada</button>` },
+            { content: `<h1>Os lábios dela são rosados.</h1><p>São do tom de rosa mais lindo. Seu formato é perfeito e eu ouso em dizer, são os lábios mais macios do mundo.</p><img src="https://i.postimg.cc/wxCfcwGd/foto-boca.jpg" alt="Boca da Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Ela tem o nariz...</h1><p>Escolha uma opção:</p>
+                        <button onclick="showError()">Grande</button>
+                        <button onclick="nextPageIfPequeno()">Pequeno</button>` },
+            { content: `<h1>O nariz dela é pequenininho.</h1><p>Ele é tão lindo, tão perfeito e tão proporcional ao rosto. Além disso, ele faz o melhor cheiro no meu pescoço.</p><img src="https://i.postimg.cc/fRBfFCBy/foto-nariz.jpg" alt="Nariz da Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Falando em rosto, o dela é...</h1><p>Escolha uma opção:</p>
+                        <button onclick="showError()">Feio</button>
+                        <button onclick="nextPageIfPerfeito()">Perfeito</button>` },
+            { content: `<h1>Ah, o rosto dela...</h1><p>O rosto dela foi desenhado por Deus. Que tamanha perfeição!(Eu sei que você achava que aqui ia ter uma foto, mas eu ainda não vou revelar, apesar de já estar claro).</p>
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Já falei muitas características físicas dela.</h1><p>Não foram todas, mas agora eu prefiro falar das características que realmente importam.</p><div><button onclick="nextPage()">Vamos lá</button></div>` },
+            { content: `<h1>Minha melhor amiga é...</h1><p>A pessoa mais doce que eu já conheci, dona dos melhores abraços, dos melhores momentos e das melhores mensagens de carinho. Minha melhor amiga é uma menina muito forte, desde que eu conheço ela, admiro-a muito por isso, pois ela suporta coisas que eu jamais conseguiria e, ainda assim, ela persiste e não deixa de ser amável. Minha melhor amiga é muito inteligente, a menina mais inteligente do mundo e eu me inspiro muito nela, se eu pudesse ter 1% de sua inteligência, eu seria uma gênia. Eu quero continuar falando sobre inteligência, pois essa menina é surreal, ela é muito 'lista', a capacidade que ela tem de decorar as coisas e a facilidade com que ela aprende é de surpreender. Minha melhor amiga é a pessoa mais legal do mundo, é incrível conversar com ela, é tanto que eu faço isso todos os dias desde 2021. É tão bom ter a amizade dela, gostaria que todos soubessem o que é isso, mas não vai dar, ela é só minha. Minha melhor amiga é tão esforçada e trabalhadora, seu esforço poderia derrubar gigantes, aliás, a coragem dela derruba gigantes todos os dias, ela só não sabe disso. Minha melhor amiga é confiável (minha caixinha de segredos), honesta, criativa, sincera, humilde, valente, determinada, prudente, calma, madura (mas criança quando está comigo), respeitosa, organizada, compreensível, leal, sensível, meiga, sábia, engraçada (me tira as risadas mais sinceras), generosa, paciente e muitas outras qualidades. Minha melhor amiga é a melhor amiga do mundo. Como eu sou feliz em ter ela em minha vida.</p><div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Eu sei que você já sabe quem é ela, então...</h1><p>Digite o nome da melhor amiga de Izabelle (lembre de colocar a primeira letra em maiúsculo):</p><input type="text" id="nameInput" placeholder="Digite o nome..."><button onclick="checkName()">Confirmar</button>` },
+            { content: `<h1>Carla é e sempre será a minha melhor amiga.</h1><p>Nesse dia especial, eu não poderia deixar de fazer algo diferente, então eu tenho algumas coisas para te falar, minha Carla.</p><img src="https://i.postimg.cc/wTY2s71q/foto-final.jpg" alt="Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Meu amor, neste dia especial...</h1><p>Eu te desejo as mais ricas bençãos do Senhor. Que seus sonhos sejam realizados e que você nunca deixe de sonhar, independente das adversidades. Acho que já deu para perceber, mas eu vou repetir, saiba que eu te admiro muito e que a sua amizade é a coisa mais importante que já aconteceu em minha vida. Sério, eu nunca imaginaria encontrar alguém como você, alguém que me entende, uma verdadeira amiga, a MINHA PESSOA, minha alma gêmea, e agora que eu encontre, nunca mais quero te perder. Saiba que com você, eu descobri o que é o amor, descobri que uma amizade sincera pode durar para sempre, e descobri o significado do versículo que diz que há amigos mais chegados do que irmãos. Muito obrigada por tudo o que você já fez por mim, mesmo sabendo de todas as minhas falhas e chatices. Para sempre te amarei. Eu ainda tenho muitas coisas para te falar, mas não teria página da web que aguentasse kkkkk, entretanto, ainda tenho uma vida inteira para conseguir demonstrar pelo menos um pouco do meu amor por você. Feliz aniversário, aproveite muito o seu dia e não esqueça de dividir o bolo comigo. Eu te amo muitoooooo. E obrigada IFRN e dona Raquel por terem me dado o melhor presente do mundo, que nem ouro nem prata podem comprar. Um xero e lembrando, eu te amo daqui até a lua. 🥰</p><img src="https://i.postimg.cc/6qnhmNmx/foto-carla.jpg" alt="Carla">
+                        <div><button onclick="nextPage()">Continuar</button></div>` },
+            { content: `<h1>Te dedico</h1><p><iframe src="https://www.youtube.com/embed/hWadAXfH6Uc" allowfullscreen></iframe>` }
+        ];
+
+        let currentPage = 0;
+
+        function checkPassword() {
+            const password = document.getElementById("passwordInput").value;
+            if (password === "Julieta.2") {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("container").style.display = "block";
+                renderPage();
+            } else {
+                alert("Senha incorreta! Tente novamente.");
+            }
+        }
+
+        function nextPage() {
+            currentPage++;
+            renderPage();
+        }
+
+        function checkName() {
+            const input = document.getElementById("nameInput").value;
+            if (input === "Carla") {
+                currentPage++;
+                renderPage();
+            } else {
+                alert("Ops! Tente novamente. Lembre-se de digitar 'Carla' com a primeira letra maiúscula.");
+            }
+        }
+
+        function showError() {
+            alert("Escolha a opção correta.");
+        }
+
+        function nextPageIfCacheado() {
+            if (currentPage === 1) {
+                currentPage++;
+                renderPage();
+            } else {
+                showError();
+            }
+        }
+
+        function nextPageIfCastanho() {
+            if (currentPage === 3) {
+                currentPage++;
+                renderPage();
+            } else {
+                showError();
+            }
+        }
+
+        function nextPageIfLindo() {
+            if (currentPage === 5) {
+                currentPage++;
+                renderPage();
+            } else {
+                showError();
+            }
+        }
+
+        function nextPageIfRosada() {
+            if (currentPage === 7) {
+                currentPage++;
+                renderPage();
+            } else {
+                showError();
+            }
+        }
+
+        function nextPageIfPequeno() {
+            if (currentPage === 9) {
+                currentPage++;
+                renderPage();
+            } else {
+                showError();
+            }
+        }
+
+        function nextPageIfPerfeito() {
+            if (currentPage === 11) {
+                currentPage++;
+                renderPage();
+            } else {
+                showError();
+            }
+        }
+
+        function renderPage() {
+            const container = document.getElementById("container");
+            container.innerHTML = pages[currentPage].content;
+        }
+
+        renderPage();
+    </script>
+</body>
+</html>
